@@ -27,55 +27,24 @@ namespace TodoApi.Controllers
             return await _context.Todos.ToListAsync();
         }
 
-        //// POST: api/todos
-        //[HttpPost]
-        //public async Task<ActionResult<Todo>> CreateTodo(Todo todo)
-        //{
-        //    todo.CreatedDate = DateTime.UtcNow;
-        //    _context.Todos.Add(todo);
-        //    await _context.SaveChangesAsync();
-        //    return Ok(todo);
-        //}
-
-        //// POST: api/todos/upload
-        //[HttpPost("upload")]
-        //public async Task<ActionResult> UploadFile(IFormFile file)
-        //{
-        //    if (file == null) return BadRequest("No file uploaded");
-
-        //    var fileUrl = await _fileService.UploadFileAsync(file);
-        //    return Ok(new { fileUrl });
-        //}
-
-        // POST: api/todos/with-file
-        [HttpPost("with-file")]
-        public async Task<ActionResult<Todo>> CreateTodoWithFile(
-            [FromForm] string title,
-            [FromForm] string description,
-            [FromForm] bool isCompleted,
-            IFormFile? file)
+        // POST: api/todos
+        [HttpPost]
+        public async Task<ActionResult<Todo>> CreateTodo(Todo todo)
         {
-            string? fileUrl = null;
-
-            if (file != null)
-            {
-                fileUrl = await _fileService.UploadFileAsync(file);
-            }
-
-            var todo = new Todo
-            {
-                Title = title,
-                Description = description,
-                IsCompleted = isCompleted,
-                CreatedDate = DateTime.UtcNow,
-                ImageUrl = fileUrl
-            };
-
+            todo.CreatedDate = DateTime.UtcNow;
             _context.Todos.Add(todo);
             await _context.SaveChangesAsync();
-
             return Ok(todo);
         }
 
+        // POST: api/todos/upload
+        [HttpPost("upload")]
+        public async Task<ActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null) return BadRequest("No file uploaded");
+
+            var fileUrl = await _fileService.UploadFileAsync(file);
+            return Ok(new { fileUrl });
+        }
     }
 }
