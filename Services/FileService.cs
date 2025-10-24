@@ -68,7 +68,15 @@ namespace TodoApi.Services
                     Folder = "todo-app-files"
                 };
 
-                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                //var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                var uploadResult = await _cloudinary.UploadAsync(new RawUploadParams
+                 {
+                     File = new FileDescription(file.FileName, stream),
+                     PublicId = $"file_{Guid.NewGuid()}",
+                     Folder = "todo-app-files"
+                 });
+
+
 
                 if (uploadResult.Error != null)
                 {
